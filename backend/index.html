@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Campus Shop</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>body{font:16px system-ui;background:#eef2f7;color:#17233b;margin:0}main{max-width:650px;margin:40px auto;padding:24px}article{background:white;border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 20px #17233b10}button{background:#2563eb;color:white;border:0;border-radius:8px;padding:12px;cursor:pointer}input{width:65px;padding:10px;margin:0 12px}small{color:#637089}#status{padding:12px;white-space:pre-wrap}h1{font-size:36px}</style>
+<main><small>LAB 3 · TELEGRAM MINI APP</small><h1>Campus Shop</h1><p>Study essentials. Order in a few taps.</p><div id="products"></div><button id="history">My orders</button><p id="status" role="status"></p></main>
+<script>
+const tg=window.Telegram?.WebApp;tg?.ready();tg?.expand();
+const status=document.querySelector('#status');
+async function api(path,method='GET',body){const r=await fetch(path,{method,headers:{'Content-Type':'application/json','X-Telegram-Init-Data':tg?.initData||''},body:body?JSON.stringify(body):undefined});const data=await r.json();if(!r.ok)throw Error(data.error);return data;}
+const money=c=>`€${(c/100).toFixed(2)}`;
+async function load(){const products=await api('/api/products');const root=document.querySelector('#products');root.replaceChildren();for(const p of products){const card=document.createElement('article');const title=document.createElement('h2');title.textContent=p.name;const info=document.createElement('p');info.textContent=`${money(p.price)} · ${p.stock} in stock`;const qty=document.createElement('input');qty.type='number';qty.min=1;qty.max=Math.min(100,p.stock);qty.value=1;qty.setAttribute('aria-label',`Quantity for ${p.name}`);const buy=document.createElement('button');buy.textContent='Order';buy.disabled=p.stock===0;buy.onclick=async()=>{buy.disabled=true;try{const o=await api('/api/orders','POST',{product_id:p.id,quantity:Number(qty.value)});status.textContent=`Order #${o.id} confirmed · ${money(o.total)}`;tg?.HapticFeedback?.notificationOccurred('success');await load();}catch(e){status.textContent=e.message;buy.disabled=false;}};card.append(title,info,qty,buy);root.append(card);}}
+document.querySelector('#history').onclick=async()=>{try{const orders=await api('/api/orders');status.textContent=orders.length?orders.map(o=>`#${o.id} · ${o.quantity} item(s) · ${money(o.total)}`).join('\n'):'No orders yet';}catch(e){status.textContent=e.message;}};
+load().catch(e=>status.textContent=e.message);
+</script></html>
