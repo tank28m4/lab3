@@ -39,7 +39,7 @@ Tokens and keys belong in environment variables and are not committed. A local-o
 
 The student must register the bot through the official @BotFather using /newbot. The repository includes .env.example and detailed startup instructions in README.md. Use a real token, matching backend API key, and public HTTPS Mini App URL. Start the Node.js backend first, then the Python long-polling bot. Verify all interactions in a private Telegram chat.
 
-A bot token was supplied after local validation. Live Telegram validation is currently blocked by the environment network proxy (403 Forbidden). A public HTTPS Mini App deployment is also still required. Add Telegram screenshots after completing these steps; do not present the local browser images below as Telegram screenshots.
+The provided bot token was verified successfully with Telegram getMe: the bot is @Lab3MKbot. The backend and Python long-polling process were started in the cloud environment. The backend health check and authenticated order-history request returned HTTP 200. Telegram confirmed that no webhook remains configured. End-to-end interaction in the Telegram client has not yet been independently verified. A public HTTPS Mini App deployment is still required. The screenshots below show the actual local Mini App; Telegram-chat screenshots must be added separately.
 
 ## 7. Validation results
 
@@ -60,6 +60,10 @@ An actual Chromium browser smoke check exercised the running local Mini App: loa
 
 ## 8. Conclusion and remaining steps
 
-The project implements the basic and advanced code requirements: Python Telegram bot, inline keyboards, sticker, Mini App, and a separate back end handling inventory and orders. Local business logic and browser behavior were validated. To complete submission evidence, register the bot, deploy HTTPS, run the live Telegram checklist, fill in student details, and append real Telegram screenshots.
+The project implements the basic and advanced code requirements: Python Telegram bot, inline keyboards, sticker, Mini App, and a separate back end handling inventory and orders. Local business logic and browser behavior were validated. To complete submission evidence, deploy a persistent host and HTTPS Mini App URL, run the live Telegram checklist, fill in student details, and append real Telegram screenshots of /start, catalog, confirmed purchase, and personal history.
 
 Prototype limitations include no payment or delivery integration and no request idempotency. Repeated confirmation requests can create separate purchases. A production version should add idempotency, rate limits, deployment hardening, and inventory administration.
+
+## 9. Hosting status
+
+The backend and bot are running in the current cloud task environment. This is a temporary development runtime, not a guaranteed 24/7 deployment. Stopping or recycling this environment can stop both processes. Persistent hosting must keep the Node.js backend and Python polling worker running and preserve the SQLite database. Only one polling worker should run per bot token. A public HTTPS endpoint is required for the Mini App.
