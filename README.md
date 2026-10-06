@@ -52,8 +52,12 @@ The backend integration test exercises HTTP routing, order totals, stock updates
 - `bot/welcome.webp`: original sticker.
 - `backend/server.js`: HTTP API, Telegram signature validation, SQLite transactions.
 - `backend/index.html`: Mini App catalog and order history.
-- `report/REPORT.md` and `report/Lab3-report.pdf`: implementation report and actual local browser screenshots.
+- `report/REPORT.md`, `report/Lab3-report.pdf`, `report/Lab3-report.docx`, and `report/Lab3-report.html`: report for Matvei Krautsou with four genuine mobile-browser screenshots and full source appendices. `Lab3-Matvei-Krautsou.zip` contains the complete submission.
 
 ## Limitations
 
-This is a laboratory prototype: no payments, shipping, stock administration, or production deployment automation. Orders are independent purchases; API retries do not have idempotency keys. A repeated confirmation may create another order. Live Telegram testing and Telegram screenshots require the student's BotFather token and HTTPS deployment. No bot was registered or live Telegram interaction claimed during automated local validation.
+This is a laboratory prototype: no payments, shipping, stock administration, or production deployment automation. Orders are independent purchases; API retries do not have idempotency keys. A repeated confirmation may create another order. Live Telegram testing and Telegram screenshots require the student's BotFather token and HTTPS deployment. The bot token was verified with Telegram and the student supplied screenshots demonstrating live purchases and history. The report documents those observations. Original Telegram screenshots still need uploading as files for embedding; inline chat images were not available to the report builder.
+
+## Rebuild the submission report
+
+Install optional report tools with `python -m pip install reportlab python-docx Pillow`, then run `python report/build_report.py`. The generator builds PDF, DOCX, standalone HTML, and a secret-free ZIP. Mini App images are actual local Chromium captures. They do not imply a public HTTPS Mini App deployment.
